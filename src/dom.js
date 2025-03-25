@@ -1,6 +1,4 @@
-import function createParagraph(){
- 
-     const paragraph = document.createElement('p');
-     paragraph.innerText = 'Ingresa tu número de teléfono';
+export function createParagraph(){
+    const paragraph = document.createElement('p');
     return paragraph;        
 }
