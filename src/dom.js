@@ -3,6 +3,7 @@ export function createPhoneInput() {
   input.placeholder = "Introduce tu telefono";
   return input;
 }
+
 export function createButton() {
   const button = document.createElement("button");
   button.textContent = "validar";
