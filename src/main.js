@@ -2,22 +2,24 @@ import "./scss/style.scss";
 import { createPhoneInput, createButton, createParagraph } from "./dom";
 import { eventListenButton } from "./event";
 
-function main () {
+function main() {
   const containerElement = document.querySelector('#app')
 
-  const inputElement = createPhoneInput()
-  containerElement.appendChild(inputElement)
-
-  const buttonElement = createButton()
-  containerElement.appendChild(buttonElement)
-
-  const paragraphElement = createParagraph()
-  containerElement.appendChild(paragraphElement)
+  containerElement.appendChild(createPhoneInput())
+  containerElement.appendChild(createButton())
+  containerElement.appendChild(createParagraph())
 
   eventListenButton(() => {
-    let numberInput = inputElement.value
-    const isValid = validateInput(numberInput)
-    showMessages(numberInput, isValid)
+    try {
+      let numberInput = document.querySelector('input').value
+      const isValid = validateInput(numberInput)
+      showMessages(numberInput, isValid)
+    } catch(error) {
+      console.error(error.message)
+      const paragrap = document.querySelector('p')
+      paragrap.classList = 'error'
+      paragrap.textContent = 'Se ha producido un error [00983]'
+    }
   })
 
 }
@@ -40,14 +42,14 @@ function showMessages(phoneNumber, valid) {
  * @returns {Bolean} Nos devuelve Numero valido o no
  */
 function validateInput(input) {
-    // Si el input está vacío, devolver un mensaje de error
-    if (input === '') return false;
-    //Quitamos los espacios en blanco
-    input = input.replaceAll(' ','')
-    //Comprobamos que su longuitud sea 9
-    if (input.length !== 9) return false;
-    // parseInt() convierte un string en un número. Si el string no es un número, devuelve NaN
-    const phoneNumber = parseInt(input)
-    // isNaN() devuelve true si el valor es NaN, de lo contrario, devuelve false
-    return Number.isNaN(phoneNumber) ? false : true  
+  // Si el input está vacío, devolver un mensaje de error
+  if (input === '') return false;
+  //Quitamos los espacios en blanco
+  input = input.replaceAll(' ', '')
+  //Comprobamos que su longuitud sea 9
+  if (input.length !== 9) return false;
+  // parseInt() convierte un string en un número. Si el string no es un número, devuelve NaN
+  const phoneNumber = parseInt(input)
+  // isNaN() devuelve true si el valor es NaN, de lo contrario, devuelve false
+  return Number.isNaN(phoneNumber) ? false : true
 }
