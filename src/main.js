@@ -1,9 +1,31 @@
 import "./scss/style.scss";
+import { createPhoneInput, createButton, createParagraph } from "./dom";
+import { eventListenButton } from "./event";
+
+function main () {
+  const containerElement = document.querySelector('#app')
+
+  const inputElement = createPhoneInput()
+  containerElement.appendChild(inputElement)
+
+  const buttonElement = createButton()
+  containerElement.appendChild(buttonElement)
+
+  const paragraphElement = createParagraph()
+  containerElement.appendChild(paragraphElement)
+
+  eventListenButton(() => {
+    let numberInput = inputElement.value
+    const isValid = validateInput(numberInput)
+    showMessages(numberInput, isValid)
+  })
+
+}
+
+main()
 
 function showMessages(phoneNumber, valid) {
-  let message;
-
-  message = valid
+  const message = valid
     ? phoneNumber.slice(-3).padStart(phoneNumber.length, "*")
     : "Invalid phone number";
 
@@ -12,9 +34,6 @@ function showMessages(phoneNumber, valid) {
   elem.textContent = message;
 }
 
-
-
-
 /**
  * Crear funcion para la validación del contenido del input. Return true/false
  * @param {String} input Input a validar como String
@@ -22,33 +41,13 @@ function showMessages(phoneNumber, valid) {
  */
 function validateInput(input) {
     // Si el input está vacío, devolver un mensaje de error
-    if (input === '') return `El campo no puede estar vacío`;
+    if (input === '') return false;
     //Quitamos los espacios en blanco
-    input = cleanString(input)
+    input = input.replaceAll(' ','')
     //Comprobamos que su longuitud sea 9
-    if (input.length !== 9) return `El campo debe tener 9 caracteres`;
+    if (input.length !== 9) return false;
     // parseInt() convierte un string en un número. Si el string no es un número, devuelve NaN
-    const stringForNumber = parseInt(input)
+    const phoneNumber = parseInt(input)
     // isNaN() devuelve true si el valor es NaN, de lo contrario, devuelve false
-    return isNaN(stringForNumber) ? `${stringForNumber}: Es un numero valido` : `${stringForNumber}:  No es un numero valido`  
-} 
-
-/**
- * Funcion para limpiar los espacios en blanco de una cadena
- * @param {*} input 
- * @returns La cadena sin espacios
- */
-function cleanString(input) {
-    // Inicializamos una nueva cadena vacía para almacenar el resultado
-    let cleanedString = "";
-
-    // Recorremos cada carácter de la cadena original
-    for (let i = 0; i < input.length; i++) {
-        // Agregamos el carácter a la nueva cadena si no es un espacio
-        if (input[i] !== " ") {
-            cleanedString += input[i];
-        }
-    }
-    // Devolvemos la cadena sin espacios
-    return cleanedString;
+    return Number.isNaN(phoneNumber) ? false : true  
 }
